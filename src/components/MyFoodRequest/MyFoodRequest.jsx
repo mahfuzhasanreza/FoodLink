@@ -4,6 +4,7 @@ import { Blocks } from 'react-loader-spinner';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
+import { SERVER_URL } from '../../config';
 
 const MyFoodRequest = () => {
     const { user } = useContext(AuthContext);
@@ -17,7 +18,7 @@ const MyFoodRequest = () => {
         setIsLoading(true);
 
         axios
-            .get(`https://a10-server-seven.vercel.app/food-requests?userEmail=${user.email}`, { withCredentials: true })
+            .get(`${SERVER_URL}/food-requests?userEmail=${user.email}`, { withCredentials: true })
             .then((response) => {
                 setFoodRequests(response.data);
             })

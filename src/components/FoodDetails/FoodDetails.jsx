@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet-async";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../providers/AuthProvider";
 import { Blocks } from "react-loader-spinner";
+import { SERVER_URL } from '../../config';
 
 const FoodDetails = () => {
     const { user } = useContext(AuthContext);
@@ -53,7 +54,7 @@ const FoodDetails = () => {
         // console.log(requestData);  // Log request data to console for debugging
 
         // Send the request data to the backend
-        fetch("https://a10-server-seven.vercel.app/request-food", {
+        fetch(`${SERVER_URL}/request-food`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

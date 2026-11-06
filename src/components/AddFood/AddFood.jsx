@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { Blocks } from 'react-loader-spinner';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
+import { SERVER_URL } from '../../config';
 
 const AddFood = () => {
     const { user } = useContext(AuthContext);
@@ -58,7 +59,7 @@ const AddFood = () => {
 
     const mutation = useMutation({
         mutationFn: async (newFood) => {
-            const response = await axios.post('https://a10-server-seven.vercel.app/food', newFood, {
+            const response = await axios.post(`${SERVER_URL}/food`, newFood, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

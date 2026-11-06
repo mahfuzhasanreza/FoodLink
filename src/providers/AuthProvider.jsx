@@ -12,6 +12,7 @@ import { createContext, useEffect, useState } from 'react';
 import { auth } from '../firebase.init';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { SERVER_URL } from '../config';
 
 export const AuthContext = createContext(null);
 
@@ -105,20 +106,16 @@ const AuthProvider = ({ children }) => {
             if (currentUser?.email) {
                 const user = { email: currentUser.email };
 
-                axios.post('https://a10-server-seven.vercel.app/jwt', user, { withCredentials: true })
-                    .then(res => {
-                   //     console.log("Login", res.data);
-                        setLoading(false);
-                    })
+                axios.post(`${SERVER_URL}/jwt`, user, { withCredentials: true })
+                    .catch(error => console.error('Failed to get auth token:', error))
+                    .finally(() => setLoading(false));
             }
             else {
-                axios.post('https://a10-server-seven.vercel.app/logout', {}, {
+                axios.post(`${SERVER_URL}/logout`, {}, {
                     withCredentials: true
                 })
-                    .then(res => {
-                   //     console.log('Logout', res.data);
-                        setLoading(false);
-                    })
+                    .catch(error => console.error('Failed to clear auth token:', error))
+                    .finally(() => setLoading(false));
             }
         });
 

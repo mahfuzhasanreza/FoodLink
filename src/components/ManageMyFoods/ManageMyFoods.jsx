@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { Helmet } from "react-helmet-async";
 import { Blocks } from "react-loader-spinner";
 import axios from "axios";
+import { SERVER_URL } from '../../config';
 
 const ManageMyFoods = () => {
   const allFoods = useLoaderData();
@@ -39,7 +40,7 @@ const ManageMyFoods = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`https://a10-server-seven.vercel.app/food/${foodId}`, {
+          .delete(`${SERVER_URL}/food/${foodId}`, {
             withCredentials: true,
           })
           .then((res) => {

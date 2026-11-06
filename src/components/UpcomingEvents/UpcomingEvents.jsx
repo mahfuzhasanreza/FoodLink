@@ -58,7 +58,7 @@ const UpcomingEvents = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-24 px-4">
-      <h2 className="text-4xl font-bold text-center text-orange-700 mb-6">Upcoming Movie Events</h2>
+      <h2 className="text-4xl font-bold text-center text-orange-700 mb-6">Upcoming Events</h2>
       <div className="space-y-10 my-24">
         {events.length > 0 ? (
           events.map((event) => (
