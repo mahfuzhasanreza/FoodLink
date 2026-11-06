@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { Blocks } from 'react-loader-spinner';
 import axios from 'axios';
+import { SERVER_URL } from '../../config';
 
 const UpdateFood = () => {
     const { user } = useContext(AuthContext);
@@ -28,7 +29,7 @@ const UpdateFood = () => {
     // Fetch the existing food data
     useEffect(() => {
         setIsLoading(true);
-        // fetch(`https://a10-server-seven.vercel.app/food/${id}`)
+        // fetch(`${SERVER_URL}/food/${id}`)
         //     .then((res) => res.json())
         //     .then((data) => {
         //         setFormData(data);
@@ -37,7 +38,7 @@ const UpdateFood = () => {
         //         Swal.fire('Error', 'Failed to fetch food details!', 'error');
         //     })
         //     .finally(() => setIsLoading(false));
-        axios.get(`https://a10-server-seven.vercel.app/food/${id}`, { withCredentials: true })
+        axios.get(`${SERVER_URL}/food/${id}`, { withCredentials: true })
             .then((response) => {
                 setFormData(response.data);
             })
@@ -80,7 +81,7 @@ const UpdateFood = () => {
         e.preventDefault();
         // if (validateForm()) {
         //     setIsLoading(true);
-        //     fetch(`https://a10-server-seven.vercel.app/food/${id}`, {
+        //     fetch(`${SERVER_URL}/food/${id}`, {
         //         method: 'PUT',
         //         headers: {
         //             'Content-Type': 'application/json',
@@ -105,7 +106,7 @@ const UpdateFood = () => {
         if (validateForm()) {
             setIsLoading(true);
             axios
-                .put(`https://a10-server-seven.vercel.app/food/${id}`, formData, {
+                .put(`${SERVER_URL}/food/${id}`, formData, {
                     headers: {
                         'Content-Type': 'application/json',
                     },

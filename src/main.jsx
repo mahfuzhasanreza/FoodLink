@@ -24,8 +24,30 @@ import UpdateFood from './components/UpdateFood/UpdateFood';
 import MyFoodRequest from './components/MyFoodRequest/MyFoodRequest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import axios from 'axios';
+import { SERVER_URL } from './config';
 
 const queryClient = new QueryClient();
+
+// Loaders: list pages fall back to an empty list if the API is unreachable or errors,
+// so the page still renders instead of crashing.
+const loadList = async (path) => {
+  try {
+    const res = await fetch(`${SERVER_URL}${path}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error(`Failed to load ${path}:`, error);
+    return [];
+  }
+};
+
+// Single-item loader: show the error page if the item can't be loaded.
+const loadItem = async (path) => {
+  const res = await fetch(`${SERVER_URL}${path}`);
+  if (!res.ok) throw new Response('Not Found', { status: res.status });
+  return res.json();
+};
 
 const router = createBrowserRouter([
   {
@@ -36,7 +58,7 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Home></Home>,
-        loader: () => fetch('https://a10-server-seven.vercel.app/available-foods'),
+        loader: () => loadList('/available-foods'),
       },
       {
         path: 'login',
@@ -57,17 +79,16 @@ const router = createBrowserRouter([
       {
         path: 'available-foods',
         element: <AvailableFoods></AvailableFoods>,
-        loader: () => fetch('https://a10-server-seven.vercel.app/available-foods')
+        loader: () => loadList('/available-foods')
       },
       {
         path: 'food/:id',
         element: <PrivateRoute><FoodDetails></FoodDetails></PrivateRoute>,
-        loader: ({ params }) => fetch(`https://a10-server-seven.vercel.app/food/${params.id}`), 
+        loader: ({ params }) => loadItem(`/food/${params.id}`), 
       },
       {
         path: 'update-food/:id',
         element: <PrivateRoute><UpdateFood></UpdateFood></PrivateRoute>,
-        loader: ({ params }) => fetch(`https://a10-server-seven.vercel.app/update-food/${params.id}`)
       },
       {
         path: 'forget-password',
@@ -76,7 +97,7 @@ const router = createBrowserRouter([
       {
         path: 'manage-foods',
         element: <PrivateRoute><ManageMyFoods></ManageMyFoods></PrivateRoute>,
-        loader: () => fetch(`https://a10-server-seven.vercel.app/food`)
+        loader: () => loadList('/food')
       },
       {
         path: 'my-food-request',

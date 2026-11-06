@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
+import { SERVER_URL } from '../../config';
 
 const ShowFood = ({ food, setUserFoods }) => {
     const { _id, name, category, price } = food;
@@ -8,8 +9,9 @@ const ShowFood = ({ food, setUserFoods }) => {
 
     const handleUpdateFood = (e) => {
         e.preventDefault();
-        fetch(`https://a10-server-seven.vercel.app/foods/${_id}`, {
+        fetch(`${SERVER_URL}/food/${_id}`, {
             method: "PUT",
+            credentials: "include",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(updatedFood),
         })
